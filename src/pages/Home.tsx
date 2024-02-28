@@ -1,3 +1,10 @@
+import { Sidebar } from '../components/Sidebar';
+
 export const Home = () => {
-  return <section></section>;
+  return (
+    <>
+      <Sidebar />
+      <section>aaa</section>;
+    </>
+  );
 };
