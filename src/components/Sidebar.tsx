@@ -1,31 +1,40 @@
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import {
-  Box,
-  Button,
+  Collapse,
   Drawer,
   List,
-  ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
 } from '@mui/material';
 import { useState } from 'react';
 
 export const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
   return (
     <>
-      <Button onClick={() => setIsOpen(!isOpen)}>Close</Button>
-      <Drawer open={isOpen} onClose={() => setIsOpen(false)}>
-        <Box sx={{ width: '100px' }}>
-          <nav>
-            <List>
-              <ListItem disablePadding>
-                <ListItemButton href="/chatgpt">
-                  <ListItemText primary="ChatGPT" />
-                </ListItemButton>
-              </ListItem>
+      <Drawer variant="permanent" open={true}>
+        <List sx={{ width: '250px' }}>
+          <ListItemButton href="/">
+            <ListItemText primary="ホーム" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => setOpen(!open)}>
+            <ListItemText primary="ChatGPT" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div">
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Starred" />
+              </ListItemButton>
             </List>
-          </nav>
-        </Box>
+          </Collapse>
+        </List>
       </Drawer>
     </>
   );

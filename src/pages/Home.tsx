@@ -1,10 +1,5 @@
-import { Sidebar } from '../components/Sidebar';
+import { Box } from '@mui/material';
 
 export const Home = () => {
-  return (
-    <>
-      <Sidebar />
-      <section>aaa</section>;
-    </>
-  );
+  return <Box sx={{ height: '100%', display: 'flex' }}>aaa</Box>;
 };
