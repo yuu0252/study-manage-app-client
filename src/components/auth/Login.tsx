@@ -1,7 +1,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,6 +10,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import { authApi } from "../../api/authApi";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -31,13 +33,20 @@ function Copyright(props: any) {
 }
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const [, setCookie] = useCookies(["token"]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const data = event.currentTarget;
+    const username = data.username.value;
+    const password = data.password.value;
+    authApi
+      .login(username, password)
+      .then((res) => {
+        setCookie("token", res.data.token);
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -88,10 +97,10 @@ export const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
