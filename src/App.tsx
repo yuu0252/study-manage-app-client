@@ -1,17 +1,16 @@
-import { ThemeProvider } from '@emotion/react';
-import './App.css';
-import { Router } from './Router';
-import { CssBaseline, createTheme, useMediaQuery } from '@mui/material';
-import { useMemo } from 'react';
+import { ThemeProvider } from "@emotion/react";
+import { Router } from "./Router";
+import { CssBaseline, createTheme, useMediaQuery } from "@mui/material";
+import { useMemo } from "react";
 
 function App() {
-  const preferDarkMode = useMediaQuery('(prefers-colors-schema: dark)');
+  const preferDarkMode = useMediaQuery("(prefers-colors-schema: dark)");
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode: preferDarkMode ? 'dark' : 'dark',
+          mode: preferDarkMode ? "dark" : "dark",
         },
       }),
     [preferDarkMode]
