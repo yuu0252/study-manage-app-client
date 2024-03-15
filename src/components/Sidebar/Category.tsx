@@ -1,16 +1,23 @@
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
-import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { useState } from "react";
-import { TypeCategory } from "../../type";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Collapse, List, ListItemButton, ListItemText } from "@mui/material";
+import { useEffect, useState } from "react";
+import { TypeCategory, TypeMemo } from "../../type";
+import { memoApi } from "../../api/memoApi";
 
 export const Category = ({ category }: { category: TypeCategory }) => {
   const [open, setOpen] = useState(false);
+  const [memos, setMemos] = useState([]);
+
+  const getAllMemos = () => {
+    memoApi
+      .getAll(category._id)
+      .then((res) => setMemos(res.data))
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    getAllMemos();
+  }, []);
 
   return (
     <>
@@ -20,12 +27,11 @@ export const Category = ({ category }: { category: TypeCategory }) => {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div">
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
-          </ListItemButton>
+          {memos.map((memo: TypeMemo) => (
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemText primary={memo.title} />
+            </ListItemButton>
+          ))}
         </List>
       </Collapse>
     </>
