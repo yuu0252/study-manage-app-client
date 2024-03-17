@@ -11,3 +11,8 @@ export type TypeMemo = {
   title: string;
   content: string;
 };
+
+export type TypeInput = {
+  title: string;
+  content: string;
+};

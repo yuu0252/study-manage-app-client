@@ -8,7 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { TypeCategory, TypeMemo } from "../../type";
+import { TypeCategory, TypeInput, TypeMemo } from "../../type";
 import { memoApi } from "../../api/memoApi";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -29,10 +29,12 @@ export const Category = ({
 
   const navigate = useNavigate();
 
-  const submitHandler = (input: any) => {
+  const submitHandler = (data: TypeInput) => {
+    const { title, content } = data;
+
     const params = {
-      title: input.text.value,
-      content: "content",
+      title: title,
+      content: content,
     };
 
     memoApi
@@ -51,10 +53,13 @@ export const Category = ({
 
   const onClickDeleteCategory = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    categoryApi
-      .delete(category._id)
-      .then(() => getAllCategories())
-      .catch((err) => console.error(err));
+    const answer = confirm(`${category.title}を削除しますか？`);
+    if (answer) {
+      categoryApi
+        .delete(category._id)
+        .then(() => getAllCategories())
+        .catch((err) => console.error(err));
+    }
   };
 
   const onClickDeleteMemo = (
@@ -115,9 +120,7 @@ export const Category = ({
         open={modalIsOpen}
         setOpen={setModalIsOpen}
         params={category}
-        submitHandler={(input: EventTarget & HTMLFormElement) =>
-          submitHandler(input)
-        }
+        submitHandler={(data: TypeInput) => submitHandler(data)}
       />
     </>
   );

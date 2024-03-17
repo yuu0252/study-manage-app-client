@@ -25,14 +25,23 @@ export const Memo = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        padding: "30px",
       }}
     >
       {memo && (
         <>
-          <Typography variant="h3" component="h3">
+          <Typography
+            variant="h2"
+            component="h2"
+            sx={{ fontSize: 20, marginBottom: 10 }}
+          >
             {memo.title}
           </Typography>
-          <Typography>{memo.content}</Typography>
+          {memo.content.split("\n").map((p, key) => (
+            <Typography key={key} sx={{ marginBottom: 2 }}>
+              {p}
+            </Typography>
+          ))}
         </>
       )}
     </Box>

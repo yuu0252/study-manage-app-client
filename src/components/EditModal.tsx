@@ -1,11 +1,14 @@
 import {
   Box,
   Button,
-  FormControl,
   Modal,
-  OutlinedInput,
+  TextField,
+  TextareaAutosize,
   Typography,
 } from "@mui/material";
+import React, { useState } from "react";
+import { openaiApi } from "../api/openaiAPI";
+import { TypeInput } from "../type";
 
 export const EditModal = ({
   open,
@@ -16,12 +19,24 @@ export const EditModal = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   params: any;
-  submitHandler: (input: EventTarget & HTMLFormElement) => void;
+  submitHandler: (data: TypeInput) => void;
 }) => {
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [isAI, setIsAI] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const input = e.currentTarget;
-    submitHandler(input);
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      title: formData.get("title") as string,
+      content: formData.get("content") as string,
+    };
+
+    if (isAI) {
+      const result = await openaiApi.chat({ prompt: data.title });
+      data.content = result.data;
+    }
+
+    submitHandler(data);
   };
 
   return (
@@ -32,6 +47,8 @@ export const EditModal = ({
       onClose={() => setOpen(false)}
     >
       <Box
+        component="form"
+        onSubmit={(e) => onSubmit(e)}
         sx={{
           position: "absolute",
           display: "flex",
@@ -50,13 +67,16 @@ export const EditModal = ({
         <Typography id="modal-modal-title" variant="h6" component="h2">
           {params.title}
         </Typography>
-        <form method="post" onSubmit={(e) => onSubmit(e)}>
-          <FormControl sx={{ width: "25ch" }}>
-            <OutlinedInput name="text" placeholder="入力してください" />
-            <button>作成</button>
-            <Button>AI生成</Button>
-          </FormControl>
-        </form>
+        <p onClick={() => setIsAI(!isAI)}>AI生成</p>
+        <TextField
+          label="タイトル"
+          name="title"
+          placeholder="入力してください"
+        />
+        {isAI || (
+          <TextareaAutosize name="content" placeholder="入力してください" />
+        )}
+        <Button type="submit">作成</Button>
       </Box>
     </Modal>
   );

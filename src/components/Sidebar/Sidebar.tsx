@@ -2,7 +2,7 @@ import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
 import { Category } from "./Category";
 import { useEffect, useState } from "react";
 import { categoryApi } from "../../api/categoryApi";
-import { TypeCategory } from "../../type";
+import { TypeCategory, TypeInput } from "../../type";
 import AddIcon from "@mui/icons-material/Add";
 import { EditModal } from "../EditModal";
 
@@ -17,8 +17,9 @@ export const Sidebar = () => {
       .catch(() => alert("カテゴリの取得に失敗しました"));
   };
 
-  const submitHandler = (input: any) => {
-    const params = { title: input.text.value };
+  const submitHandler = (data: TypeInput) => {
+    const { title } = data;
+    const params = { title: title };
     categoryApi
       .create(params)
       .then(() => {
@@ -56,9 +57,7 @@ export const Sidebar = () => {
         open={modalIsOpen}
         setOpen={setModalIsOpen}
         params={{ title: "カテゴリを新規作成" }}
-        submitHandler={(input: EventTarget & HTMLFormElement) =>
-          submitHandler(input)
-        }
+        submitHandler={(data: TypeInput) => submitHandler(data)}
       />
     </>
   );
