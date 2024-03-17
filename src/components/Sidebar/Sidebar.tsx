@@ -44,7 +44,11 @@ export const Sidebar = () => {
             <AddIcon />
           </ListItemButton>
           {categories.map((category: TypeCategory) => (
-            <Category key={category._id} category={category} />
+            <Category
+              key={category._id}
+              category={category}
+              getAllCategories={() => getAllCategories()}
+            />
           ))}
         </List>
       </Drawer>

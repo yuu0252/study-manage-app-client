@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   Modal,
   OutlinedInput,
@@ -51,11 +52,9 @@ export const EditModal = ({
         </Typography>
         <form method="post" onSubmit={(e) => onSubmit(e)}>
           <FormControl sx={{ width: "25ch" }}>
-            <OutlinedInput
-              name="text"
-              placeholder="カテゴリ名を入力してください"
-            />
+            <OutlinedInput name="text" placeholder="入力してください" />
             <button>作成</button>
+            <Button>AI生成</Button>
           </FormControl>
         </form>
       </Box>
