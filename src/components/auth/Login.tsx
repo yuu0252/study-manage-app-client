@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import { authApi } from "../../api/authApi";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/loginSlice";
 
 function Copyright(props: any) {
   return (
@@ -33,8 +35,10 @@ function Copyright(props: any) {
 }
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [, setCookie] = useCookies(["token"]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = event.currentTarget;
@@ -43,7 +47,8 @@ export const Login = () => {
     authApi
       .login(username, password)
       .then((res) => {
-        setCookie("token", res.data.token);
+        setCookie("token", res.data.token, { maxAge: 2592000 });
+        dispatch(login());
         navigate("/");
       })
       .catch((err) => console.log(err));
