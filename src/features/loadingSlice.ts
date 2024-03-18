@@ -12,7 +12,8 @@ export const loadingSlice = createSlice({
   },
 });
 
-export const selectLoading = (state: { isLoading: boolean }) => state.isLoading;
+export const selectLoading = (state: { loading: { isLoading: boolean } }) =>
+  state.loading;
 
 export const { setIsLoading } = loadingSlice.actions;
 
