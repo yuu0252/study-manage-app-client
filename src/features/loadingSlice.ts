@@ -12,7 +12,7 @@ export const loadingSlice = createSlice({
   },
 });
 
-export const selectLoding = (state: { isLoading: boolean }) => state.isLoading;
+export const selectLoading = (state: { isLoading: boolean }) => state.isLoading;
 
 export const { setIsLoading } = loadingSlice.actions;
 
