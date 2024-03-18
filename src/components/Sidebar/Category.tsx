@@ -15,6 +15,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { EditModal } from "../EditModal";
 import { Link, useNavigate } from "react-router-dom";
 import { categoryApi } from "../../api/categoryApi";
+import { setIsLoading } from "../../features/loadingSlice";
+import { useDispatch } from "react-redux";
 
 export const Category = ({
   category,
@@ -23,11 +25,12 @@ export const Category = ({
   category: TypeCategory;
   getAllCategories: () => void;
 }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [memos, setMemos] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   const submitHandler = (data: TypeInput) => {
     const { title, content } = data;
@@ -43,7 +46,8 @@ export const Category = ({
         getAllMemos();
         setModalIsOpen(false);
       })
-      .catch((err) => alert(err.data));
+      .catch((err) => alert(err.data))
+      .finally(() => dispatch(setIsLoading(false)));
   };
 
   const onClickAddMemo = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -5,8 +5,12 @@ import { categoryApi } from "../../api/categoryApi";
 import { TypeCategory, TypeInput } from "../../type";
 import AddIcon from "@mui/icons-material/Add";
 import { EditModal } from "../EditModal";
+import { setIsLoading } from "../../features/loadingSlice";
+import { useDispatch } from "react-redux";
 
 export const Sidebar = () => {
+  const dispatch = useDispatch();
+
   const [categories, setCategories] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -26,7 +30,8 @@ export const Sidebar = () => {
         getAllCategories();
         setModalIsOpen(false);
       })
-      .catch((err) => alert(err.data));
+      .catch((err) => alert(err.data))
+      .finally(() => dispatch(setIsLoading(false)));
   };
 
   useEffect(() => {

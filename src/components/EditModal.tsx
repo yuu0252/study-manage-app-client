@@ -1,14 +1,10 @@
-import {
-  Box,
-  Button,
-  Modal,
-  TextField,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import React, { useState } from "react";
 import { openaiApi } from "../api/openaiAPI";
 import { TypeInput } from "../type";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoading, setIsLoading } from "../features/loadingSlice";
 
 export const EditModal = ({
   open,
@@ -21,10 +17,14 @@ export const EditModal = ({
   params: any;
   submitHandler: (data: TypeInput) => void;
 }) => {
+  const dispatch = useDispatch();
+
   const [isAI, setIsAI] = useState(false);
+  const { isLoading } = useSelector(selectLoading);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(setIsLoading(true));
     const formData = new FormData(e.currentTarget);
     const data = {
       title: formData.get("title") as string,
@@ -54,6 +54,7 @@ export const EditModal = ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "center",
           width: "50%",
           height: "50%",
           top: "50%",
@@ -67,16 +68,27 @@ export const EditModal = ({
         <Typography id="modal-modal-title" variant="h6" component="h2">
           {params.title}
         </Typography>
-        <p onClick={() => setIsAI(!isAI)}>AI生成</p>
-        <TextField
-          label="タイトル"
-          name="title"
-          placeholder="入力してください"
-        />
+        <Button type="button" onClick={() => setIsAI(!isAI)}>
+          AI生成
+        </Button>
+        <TextField label="タイトル" name="title" sx={{ width: "100%" }} />
         {isAI || (
-          <TextareaAutosize name="content" placeholder="入力してください" />
+          <TextField
+            label="コンテント"
+            name="content"
+            multiline
+            rows={5}
+            sx={{ width: "100%" }}
+          />
         )}
-        <Button type="submit">作成</Button>
+        <LoadingButton
+          loading={isLoading}
+          sx={{ width: "100%" }}
+          variant="outlined"
+          type="submit"
+        >
+          作成
+        </LoadingButton>
       </Box>
     </Modal>
   );
