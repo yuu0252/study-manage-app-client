@@ -125,6 +125,7 @@ export const Category = ({
         setOpen={setModalIsOpen}
         params={category}
         submitHandler={(data: TypeInput) => submitHandler(data)}
+        isContent={true}
       />
     </>
   );

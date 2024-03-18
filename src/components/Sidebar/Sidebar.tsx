@@ -63,6 +63,7 @@ export const Sidebar = () => {
         setOpen={setModalIsOpen}
         params={{ title: "カテゴリを新規作成" }}
         submitHandler={(data: TypeInput) => submitHandler(data)}
+        isContent={false}
       />
     </>
   );
