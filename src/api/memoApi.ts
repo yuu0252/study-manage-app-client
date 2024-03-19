@@ -7,6 +7,8 @@ export const memoApi = {
     axiosFetchServer.get(`/categories/${categoryId}/memos`),
   getOne: (categoryId: string, memoId: string) =>
     axiosFetchServer.get(`/categories/${categoryId}/memos/${memoId}`),
+  update: (categoryId: string, memoId: string, params: object) =>
+    axiosFetchServer.put(`/categories/${categoryId}/memos/${memoId}`, params),
   delete: (categoryId: string, memoId: string) =>
     axiosFetchServer.delete(`/categories/${categoryId}/memos/${memoId}`),
 };
