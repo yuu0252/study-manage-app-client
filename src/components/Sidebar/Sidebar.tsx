@@ -1,4 +1,10 @@
-import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import { Category } from "./Category";
 import { useEffect, useState } from "react";
 import { categoryApi } from "../../api/categoryApi";
@@ -45,6 +51,7 @@ export const Sidebar = () => {
           <ListItemButton href="/">
             <ListItemText primary="ホーム" />
           </ListItemButton>
+          <Divider component="div" role="presentation" />
           <ListItemButton onClick={() => setModalIsOpen(true)}>
             <ListItemText primary="新しいカテゴリを作成" />
             <AddIcon />
@@ -56,6 +63,7 @@ export const Sidebar = () => {
               getAllCategories={() => getAllCategories()}
             />
           ))}
+          <Divider component="div" role="presentation" />
         </List>
       </Drawer>
       <EditModal
